@@ -1,0 +1,57 @@
+@import helper._
+@import model.Menu
+@import model.Menu._
+
+@(orderForm:Form[model.Order], menuSeq: Seq[Menu])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@main("Welcome to Play"){
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Order</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel-body">
+
+                @helper.form(action = CSRF(routes.Order.orders())){
+
+                <div class="row">
+                    <div class="column" style="background-color:#ccc;">
+                        Customer
+                        <hr/>
+                        @inputText(orderForm("customer.name"), '_label -> "Name: ", 'required -> "true")
+                        @inputText(orderForm("customer.street"), '_label -> "Street: ", 'required -> "true")
+                        @inputText(orderForm("customer.phone_number"), '_label -> "Phone number: ")
+                    </div>
+
+                    <div class="column" style="background-color:#ccc;">
+                        Product
+                        <hr/>
+                        <select class="selectpicker">
+                            @for(menu <- menuSeq) {
+                                <option>@menu.dishName</option>
+                            }
+                        </select>
+                        @inputText(orderForm("product.price"), '_label -> "Price: ", 'required -> "true")
+                        @inputText(orderForm("product.quantity"), '_label -> "Quantity: ")
+                        @inputText(orderForm("product.final_price"), '_label -> "Final price: ")
+                    </div>
+
+                    <div class="column" style="background-color:#ccc;">
+                        Price
+                        <hr/>
+                        @inputText(orderForm("orders_price"), '_label -> "Orders price: ")
+                        @inputText(orderForm("delivery_price"), '_label -> "Delivery price: ", 'required -> "true")
+                        @inputText(orderForm("total_price"), '_label -> "Total price: ")
+
+                        <input type="submit" class="pull-right" value="Submit">
+                    </div>
+
+                </div>
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+}
